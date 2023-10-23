@@ -2,6 +2,7 @@
 
 // Başlangıç Challenge'ı
 
+
 /**Örnek Görev: İlkini Dön
  * 
  * Bu örnek sonradan gelecek olan görevleri nasıl çözeceğinizi size gösterecek.
@@ -64,10 +65,10 @@ Aşağıdaki takimSkoru() fonksiyonununda aşağıdakileri yapınız:
 Not: Bu fonskiyon, aşağıdaki diğer görevler için de bir callback fonksiyonu olarak da kullanılacak
 */
 
-function takimSkoru(/*Kodunuzu buraya yazınız*/){
-    /*Kodunuzu buraya yazınız*/
-}
+function takimSkoru(){
 
+  return Math.floor((Math.random() * 16) + 10);
+}
 
 
 
@@ -86,12 +87,18 @@ Aşağıdaki macSonucu() fonksiyonununda aşağıdakileri yapınız:
 }
 */ 
 
-function macSonucu(/*Kodunuzu buraya yazınız*/){
-  /*Kodunuzu buraya yazınız*/
+function macSonucu(func, quarter){
+  let scoreBoard = {
+    "EvSahibi": 0,
+    "KonukTakim": 0
+  }
+
+  for(let i = 0; i < quarter; i++){
+    scoreBoard.EvSahibi += func();
+    scoreBoard.KonukTakim += func();
+  }
+  return scoreBoard;
 }
-
-
-
 
 
 
@@ -109,9 +116,16 @@ Aşağıdaki periyotSkoru() fonksiyonununda aşağıdakileri yapınız:
   */
 
 
-function periyotSkoru(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function periyotSkoru(takimSkoru) {
+  let obj = {
+    "EvSahibi": 0,
+    "KonukTakim": 0 
+  }
 
+  obj.EvSahibi += takimSkoru();
+  obj.KonukTakim += takimSkoru();
+
+  return obj;
 }
 
 
@@ -146,10 +160,29 @@ MAÇ UZAR ise skorTabelasi(periyotSkoru,takimSkoru,4)
 ] */
 // NOTE: Bununla ilgili bir test yoktur. Eğer logladığınız sonuçlar yukarıdakine benziyor ise tmamlandı sayabilirsiniz.
 
-function skorTabelasi(/*Kodunuzu buraya yazınız*/) {
-  /*Kodunuzu buraya yazınız*/
+function skorTabelasi(periodScores, pointsInPeriod, quarters) {
+  let homeScore = 0;
+  let awayScore = 0;
+  
+  let ps;
+  for(let i = 0; i < quarters; i++){
+    ps = periodScores(pointsInPeriod);
+    homeScore += ps.EvSahibi;
+    awayScore += ps.KonukTakim;
+    console.log(`${i + 1}. Periyot: Ev Sahibi ${ps.EvSahibi} - Konuk Takım ${ps.KonukTakim}`);
+  }
+  let ind = 1;
+  while(homeScore == awayScore){
+    ps = periodScores(pointsInPeriod);
+    homeScore += ps.EvSahibi;
+    awayScore += ps.KonukTakim;
+    console.log(`${ind}. Uzatma: Ev Sahibi ${ps.EvSahibi} - Konuk Takım ${ps.KonukTakim}`);
+  }
+
+  console.log(`Maç Sonucu: Ev Sahibi ${homeScore} - Konuk Takım ${awayScore}`);
 }
 
+skorTabelasi(periyotSkoru,takimSkoru,4);
 
 
 
